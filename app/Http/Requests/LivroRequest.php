@@ -29,6 +29,7 @@ class LivroRequest extends FormRequest
             'editora' => 'required|string|min:2|max:40',
             'edicao' => 'required|integer',
             'ano_publicacao' => 'required|string|max:4',
+            'preco' => 'required|numeric|min:0',
         ];
     }
 

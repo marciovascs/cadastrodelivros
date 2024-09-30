@@ -9,6 +9,8 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Assunto;
 use App\Models\Livro;
 
+use App\Services\LivroService;
+
 use App\Http\Requests\LivroRequest as StoreRequest;
 use App\Http\Requests\LivroRequest as UpdateRequest;
 
@@ -36,6 +38,7 @@ class LivroCrudController extends CrudController
      */
     public function setup()
     {
+
         CRUD::setModel(\App\Models\Livro::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/livro');
         CRUD::setEntityNameStrings('livro', 'livros');
@@ -65,7 +68,7 @@ class LivroCrudController extends CrudController
         // Definir campos automaticamente a partir do banco de dados
         CRUD::setFromDb();
 
-        // Adicionar campo para selecionar vários assuntos
+        // Adicionar campo para selecionar vários assuntos - select_multiple
         CRUD::addField([
             'label'     => 'Assuntos',
             'type'      => 'select_multiple',
@@ -76,7 +79,7 @@ class LivroCrudController extends CrudController
             'pivot'     => true, // se for uma relação muitos-para-muitos
         ]);
 
-        // Adicionar campo para selecionar vários autores
+        // Adicionar campo para selecionar vários autores - select_multiple
         CRUD::addField([
             'label'     => 'Autores',
             'type'      => 'select_multiple',
@@ -87,16 +90,21 @@ class LivroCrudController extends CrudController
             'pivot'     => true, // se for uma relação muitos-para-muitos
         ]);
 
-        // Adicionar campo para o preço
+        // vamos recriar o campo preco, já que precisaremos tratá-lo com javascript
         CRUD::addField([
             'label' => 'Preço',
             'name'  => 'preco', // nome do campo no banco de dados
-            'type'  => 'number', // tipo do campo
+            'type'  => 'text', // Altere para 'text' para evitar problemas de formatação
             'attributes' => [
                 'step' => '0.01', // permite valores decimais
                 'min' => '0', // mínimo permitido
+                'id' => 'preco',
+                'oninput' => 'mascaraMoeda(this)', // Chama a função ao digitar
+                'placeholder' => 'R$ 0,00' // Placeholder para o campo
             ],
         ]);
+
+
 
     }
 
@@ -109,26 +117,19 @@ class LivroCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        // vamos deixar seguir o create
         $this->setupCreateOperation();
     }
 
     public function store(StoreRequest $request)
     {
         try {
-            $assuntos = $request->get('assuntos');
-            $autores = $request->get('autores');
-
-            $objLivro = Livro::create($request->validated());
-
-            // Associar os assuntos ao livro - salvar em livro_assunto
-            if ($assuntos) {
-                $objLivro->assuntos()->attach($assuntos);
-            }
-
-            // Associar os autores ao livro - salvar em livro_autor
-            if ($autores) {
-                $objLivro->autores()->attach($autores);
-            }
+            /**
+             * Vamos chamar o serviço para criar o livro,
+             * assim evitaremos poluir o Controller
+             */
+            $objLivroService = new LivroService();
+            $objLivroService->criarLivro($request->validated());
 
             \Alert::success('Livro salvo com sucesso!')->flash();
             return redirect(backpack_url('/livro'));
@@ -142,6 +143,7 @@ class LivroCrudController extends CrudController
             return redirect()->back()->withInput();
         }
     }
+
 
 
 }

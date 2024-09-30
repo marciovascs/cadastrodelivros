@@ -29,7 +29,9 @@ class LivroRequest extends FormRequest
             'editora' => 'required|string|min:2|max:40',
             'edicao' => 'required|integer',
             'ano_publicacao' => 'required|string|max:4',
-            'preco' => 'required|numeric|min:0',
+            'preco' => 'required|min:0',
+            'assuntos' => 'required',
+            'autores' => 'required',
         ];
     }
 
@@ -56,4 +58,45 @@ class LivroRequest extends FormRequest
             //
         ];
     }
+
+    /**
+     * vai passar por aqui antes da validação dos dados
+     */
+    protected function prepareForValidation()
+    {
+
+        // Limpa a variável preco
+        if ($this->preco) {
+
+            // dd($this->preco);
+
+            // Remove 'R$', espaços e transforma vírgula em ponto
+            $precoLimpo = preg_replace('/R\$|\s/', '', $this->preco); // Remove 'R$' e espaços
+
+
+
+            // não pode remover ponto se não tiver vírgula
+            $posicaoVirgula = strpos($precoLimpo, ',');
+            if($posicaoVirgula){
+                $precoLimpo = str_replace('.', '', $precoLimpo); // Remove pontos (milhares)
+            }
+
+
+            // $posicaoVirgula = strpos($precoLimpo, ',');
+            // if($posicaoVirgula){
+            //     $precoLimpo = str_replace(',', '.', $precoLimpo); // Troca vírgula por ponto
+            // }
+
+            $precoLimpo = str_replace(',', '.', $precoLimpo); // Troca vírgula por ponto
+
+            // dd($precoLimpo);
+
+
+            // Converte a string para float
+            $this->merge([
+                'preco' => (float)$precoLimpo,
+            ]);
+        }
+    }
+
 }

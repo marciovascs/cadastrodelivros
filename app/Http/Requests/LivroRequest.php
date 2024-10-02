@@ -64,34 +64,16 @@ class LivroRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-
-        // Limpa a variável preco
+        // Limpar a formatação da variável preco
         if ($this->preco) {
-
-            // dd($this->preco);
-
             // Remove 'R$', espaços e transforma vírgula em ponto
             $precoLimpo = preg_replace('/R\$|\s/', '', $this->preco); // Remove 'R$' e espaços
-
-
-
             // não pode remover ponto se não tiver vírgula
             $posicaoVirgula = strpos($precoLimpo, ',');
             if($posicaoVirgula){
                 $precoLimpo = str_replace('.', '', $precoLimpo); // Remove pontos (milhares)
             }
-
-
-            // $posicaoVirgula = strpos($precoLimpo, ',');
-            // if($posicaoVirgula){
-            //     $precoLimpo = str_replace(',', '.', $precoLimpo); // Troca vírgula por ponto
-            // }
-
             $precoLimpo = str_replace(',', '.', $precoLimpo); // Troca vírgula por ponto
-
-            // dd($precoLimpo);
-
-
             // Converte a string para float
             $this->merge([
                 'preco' => (float)$precoLimpo,

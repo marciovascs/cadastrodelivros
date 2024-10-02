@@ -5,3 +5,5 @@
 
 <x-backpack::menu-item title="Assuntos" icon="la la-question" :link="backpack_url('assunto')" />
 <x-backpack::menu-item title="Livros" icon="la la-question" :link="backpack_url('livro')" />
+
+<x-backpack::menu-item title="Relatório Autor" icon="la la-question" :link="backpack_url('relatorio-autor')" />

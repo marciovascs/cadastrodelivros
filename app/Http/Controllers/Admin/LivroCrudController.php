@@ -42,6 +42,10 @@ class LivroCrudController extends CrudController
         CRUD::setModel(\App\Models\Livro::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/livro');
         CRUD::setEntityNameStrings('livro', 'livros');
+
+        // vamos ordenar pelo título do livro
+        $this->crud->addClause('orderBy', 'livro.titulo');
+
     }
 
     /**

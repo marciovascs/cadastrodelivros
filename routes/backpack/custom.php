@@ -2,11 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-// --------------------------
-// Custom Backpack Routes
-// --------------------------
-// This route file is loaded automatically by Backpack\CRUD.
-// Routes you generate using Backpack\Generators will be placed here.
+use App\Http\Controllers\Admin\RelatorioAutorController;
 
 Route::group([
     'prefix' => config('backpack.base.route_prefix', 'admin'),
@@ -19,8 +15,9 @@ Route::group([
     Route::crud('autor', 'AutorCrudController');
     Route::crud('assunto', 'AssuntoCrudController');
     Route::crud('livro', 'LivroCrudController');
-}); // this should be the absolute last line of this file
 
-/**
- * DO NOT ADD ANYTHING HERE.
- */
+    Route::get('/relatorio-autor', 'RelatorioAutorController@selecionarAutor')->name('relatorio-autor');
+    Route::post('gerar-relatorio-autor', [RelatorioAutorController::class, 'gerarRelatorioAutor'])->name('gerar-relatorio-autor');
+    Route::post('gerar-pdf-relatorio-autor', [RelatorioAutorController::class, 'gerarPdfRelatorioAutor'])->name('gerar-pdf-relatorio-autor');
+
+});

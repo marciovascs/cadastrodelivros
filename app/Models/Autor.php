@@ -35,6 +35,17 @@ class Autor extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    // vamos fazer com que sempre que os autores sejam buscados, já venham com seus livros
+    protected static function booted()
+    {
+        static::addGlobalScope('livros', function ($query) {
+            $query->with('livros');
+        });
+    }
+    public function livros()
+    {
+        return $this->belongsToMany(Livro::class, 'livro_autor', 'autor_id', 'livro_id');
+    }
 
     /*
     |--------------------------------------------------------------------------

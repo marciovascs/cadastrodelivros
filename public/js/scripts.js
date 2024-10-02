@@ -1,3 +1,6 @@
+/**
+ * Máscara para formatação do valor
+ */
 function mascaraMoeda(field) {
     // Remove caracteres que não são números
     let valor = field.value.replace(/\D/g, '');

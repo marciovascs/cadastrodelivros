@@ -35,6 +35,14 @@ class Livro extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    // vamos fazer com que sempre que os livros sejam buscados, já venham com seus assuntos
+    protected static function booted()
+    {
+        static::addGlobalScope('assuntos', function ($query) {
+            $query->with('assuntos');
+        });
+    }
+
     public function assuntos()
     {
         return $this->belongsToMany(Assunto::class, 'livro_assunto', 'livro_id', 'assunto_id');

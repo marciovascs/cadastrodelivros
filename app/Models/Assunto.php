@@ -35,6 +35,10 @@ class Assunto extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function livros()
+    {
+        return $this->belongsToMany(Livro::class, 'livro_assunto'); // ajuste o nome da tabela de junção, se necessário
+    }
 
     /*
     |--------------------------------------------------------------------------

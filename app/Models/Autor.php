@@ -29,6 +29,17 @@ class Autor extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    /**
+     * Método para acessar a view 'view_relatorio_autor'
+     */
+    public function getDadosGerarRelatorioAutorByView()
+    {
+        $dados = \DB::table('view_relatorio_autor')
+            ->where('autor_id', $this->id)
+            ->get();
+        return $dados;
+    }
+
 
     /*
     |--------------------------------------------------------------------------

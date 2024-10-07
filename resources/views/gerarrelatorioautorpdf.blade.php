@@ -1,4 +1,5 @@
-{{-- Esta é a view do PDF do relatório --}}
+
+{{-- Esta é a view da geração do PDF do relatório --}}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,21 +11,17 @@
 <body>
 
 <h1>Relatório do Autor</h1>
-<h2>Nome do Autor: {{ $autor->nome }}</h2>
+<h2>Nome do Autor: {{ $dados[0]->autor_nome }}</h2>
 
 <h3>Livros:</h3>
 <ul>
-    @foreach ($autor->livros as $livro)
+    @foreach ($dados as $livro_id => $livro)
         <li>
 
-            <strong>Título:</strong> {{ $livro->titulo }}
+            <strong>Título:</strong> {{ $livro->livro_titulo }}
             <br>
-            <strong>Assuntos:</strong>
-            <ul>
-                @foreach ($livro->assuntos as $assunto)
-                    <li>{{ $assunto->descricao }}</li>
-                @endforeach
-            </ul>
+            <strong>Assunto:</strong> {{ $livro->assunto_descricao }}
+
         </li>
         <hr>
     @endforeach

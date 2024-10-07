@@ -12,15 +12,15 @@ return new class extends Migration
     {
         DB::statement("
             CREATE VIEW view_relatorio_autor AS
-            SELECT a.nome AS autor_nome,
-                   l.titulo AS livro_titulo,
+            SELECT a.id as autor_id, a.nome AS autor_nome,
+                   l.id as livro_id, l.titulo AS livro_titulo,
                    ass.descricao AS assunto_descricao
             FROM autor a
             INNER JOIN livro_autor la ON la.autor_id = a.id
             INNER JOIN livro l ON l.id = la.livro_id
             INNER JOIN livro_assunto las ON las.livro_id = l.id
             INNER JOIN assunto ass ON ass.id = las.assunto_id
-            GROUP BY autor_nome, livro_titulo, assunto_descricao
+            GROUP BY a.id, autor_nome, l.id, livro_titulo, assunto_descricao
             ORDER BY autor_nome, livro_titulo, assunto_descricao
         ");
     }

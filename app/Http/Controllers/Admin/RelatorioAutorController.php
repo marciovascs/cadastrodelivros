@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\RelatorioAutorRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\AutorRepository;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -14,6 +15,13 @@ use App\Http\Requests\RelatorioAutorRequest as StoreRequest;
 
 class RelatorioAutorController extends Controller
 {
+    protected $autorRepository;
+
+    public function __construct(AutorRepository $autorRepository)
+    {
+        $this->autorRepository = $autorRepository;
+    }
+
     /**
      * método que exibe o select com os autores
      */
@@ -27,17 +35,16 @@ class RelatorioAutorController extends Controller
      */
     public function gerarRelatorioAutor(StoreRequest $request){
         $autorId = $request->input('autor_id');
-        $autor = Autor::with('livros')->findOrFail($autorId);
-        return view('gerarrelatorioautor', compact('autor'));
+        $dados = $this->autorRepository->getDadosGerarRelatorioAutorByView($autorId);
+        return view('gerarrelatorioautor', compact('dados'));
     }
 
     /**
      * método que gera o relatório em pdf, com DomPDF
      */
     public function gerarPdfRelatorioAutor(Request $request){
-        $autorId = $request->input('autorId');
-        $autor = Autor::with('livros.assuntos')->findOrFail($autorId); // Carrega os livros e assuntos
-        $pdf = Pdf::loadView('gerarrelatorioautorpdf', compact('autor')); // Carrega a view que vai ser o pdf
+        $dados = json_decode($request->input('dados'));
+        $pdf = Pdf::loadView('gerarrelatorioautorpdf', compact('dados')); // Carrega a view que vai ser o pdf
         return $pdf->download('relatorio_autor.pdf'); // Faz o download do PDF
     }
 }

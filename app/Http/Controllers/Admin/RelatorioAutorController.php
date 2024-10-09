@@ -35,6 +35,12 @@ class RelatorioAutorController extends Controller
      */
     public function gerarRelatorioAutor(StoreRequest $request){
         $autorId = $request->input('autor_id');
+        /**
+         * !!! sei que o autorRepository não deveria ser chamado diretamente !!!
+         *
+         * Acredito que deveria chamar AutorController, que chamaria Autor,
+         * que chamaria o repository.
+         */
         $dados = $this->autorRepository->getDadosGerarRelatorioAutorByView($autorId);
         return view('gerarrelatorioautor', compact('dados'));
     }

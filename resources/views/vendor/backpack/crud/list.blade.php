@@ -22,6 +22,23 @@
   {{-- Default box --}}
   <div class="row" bp-section="crud-operation-list">
 
+
+    {{-- Início teste bootstrap funcionando --}}
+        {{-- <div class="container mt-5">
+            <h1 class="text-center">Teste de Bootstrap</h1>
+            <div class="alert alert-success text-center" role="alert">
+                Se você vê esta mensagem em verde, o Bootstrap está funcionando corretamente!
+            </div>
+            <button class="btn btn-primary" id="testButton">Clique em mim!</button>
+        </div>
+        <script>
+            document.getElementById('testButton').addEventListener('click', function() {
+                alert('Você clicou no botão!');
+            });
+        </script> --}}
+    {{-- Fim teste bootstrap funcionando --}}
+
+
     {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 

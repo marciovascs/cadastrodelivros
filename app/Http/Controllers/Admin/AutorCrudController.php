@@ -29,6 +29,9 @@ class AutorCrudController extends CrudController
         CRUD::setModel(\App\Models\Autor::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/autor');
         CRUD::setEntityNameStrings('autor', 'autores');
+
+        // vamos ordenar pelo nome do assunto
+        $this->crud->addClause('orderBy', 'autor.nome');
     }
 
     /**
@@ -39,12 +42,7 @@ class AutorCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::setFromDb();
     }
 
     /**
@@ -56,12 +54,7 @@ class AutorCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(AutorRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        CRUD::setFromDb();
     }
 
     /**

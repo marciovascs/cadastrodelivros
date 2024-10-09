@@ -38,14 +38,12 @@ class LivroCrudController extends CrudController
      */
     public function setup()
     {
-
         CRUD::setModel(\App\Models\Livro::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/livro');
         CRUD::setEntityNameStrings('livro', 'livros');
 
         // vamos ordenar pelo título do livro
         $this->crud->addClause('orderBy', 'livro.titulo');
-
     }
 
     /**
@@ -56,15 +54,10 @@ class LivroCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        CRUD::setFromDb();
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
+
     protected function setupCreateOperation()
     {
         CRUD::setValidation(LivroRequest::class);
@@ -107,9 +100,6 @@ class LivroCrudController extends CrudController
                 'placeholder' => 'R$ 0,00' // Placeholder para o campo
             ],
         ]);
-
-
-
     }
 
 
@@ -147,7 +137,4 @@ class LivroCrudController extends CrudController
             return redirect()->back()->withInput();
         }
     }
-
-
-
 }

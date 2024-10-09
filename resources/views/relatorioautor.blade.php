@@ -27,6 +27,7 @@
                     </select>
 
                     <button type="submit" class="btn btn-primary mt-3">Gerar Relatório</button>
+
                 </form>
                 {{-- Fim do Formulário --}}
             </div>
